@@ -59,3 +59,21 @@ fun {NotUnique List}
     [] H|T then if {Member H T} then true else {NotUnique T} end
     end
 end
+
+fun {ArgsInClosure ArgList xs closure E}
+    case ArgList
+    of nil then closure
+    [] ident(H) | T then
+        case xs
+        of nil then raise 'wrong arguments to procedure' end
+        [] ident(H1) | T1 then
+            {ArgsInClosure T T1 {Adjoin closure environment(H:E.H1)} E}
+        [] H1 | T1 then
+            local A in
+                A = {AddKeyToSAS}
+                {BindValueToKeyInSAS A H1}
+                {ArgsInClosure T T1 {Adjoin closure environment(H:A)} E}
+            end
+        end 
+    end
+end
