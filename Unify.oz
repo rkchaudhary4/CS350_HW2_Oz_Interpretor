@@ -104,8 +104,3 @@ in
    {UnifyRecursive {SubstituteIdentifiers Exp1 Env}
     {SubstituteIdentifiers Exp2 Env} nil}
 end
-
-
-
-
-
