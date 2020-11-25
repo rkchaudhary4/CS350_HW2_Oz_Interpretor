@@ -40,28 +40,23 @@ proc {Interpret SStack}
                         end
                     end
                 end
+            [] semanticStatement(apply|ident(f)|xs E) then
+            local ValOfX in
+                ValOfX = {RetrieveFromSAS E.f}
+                case ValOfX
+                of procedure(ArgList S closure) then
+                    if {Length ArgList} \= {Length xs} then raise 'wrong arguments to proc' end
+                    else
+                        local NC in
+                            NC = {ArgsInClosure ArgList xs closure E}
+                            {Push SStack S NC}
+                        end
+                    end
+                [] equivalence(_) then
+                raise 'unbound proc' end
+                else raise 'variable is not a procedure' end
+                end
+            end
             end
     end
 end
-
-        % case {Pop SStack} of
-            % semanticStatement([match ident(x) p s1 s2] E) then
-                % local ValOfX Match Enew in
-                    % ValOfX = {RetrieveFromSAS E.x}
-                    % if ValOfX.1 \= record then raise notRecord(x) end
-                    % elseif p.1 \= record then {Push SStack s2 E} end
-                    % else
-                        % case ValOfX of equivalence(_) then
-                            % raise unbound(X) end
-                        % else
-                            % {MatchBind ValOfX p E Match Enew}
-                            % if Match == true
-                            % then
-                                % {Push SStack s1 Enew}
-                            % else
-                                % {Push SStack s2 E}
-                            % end
-                            % end
-                        % end
-                        % end
-                % end
