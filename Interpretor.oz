@@ -43,7 +43,7 @@ proc {Interpret SStack}
             [] semanticStatement([nop] E) then 
                 skip
             [] semanticStatement([var ident(X) s] E) then
-			    {Push SemanticStack s {Adjoin E environment(X:{AddKeyToSAS})}}
+			    {Push SStack s {Adjoin E environment(X:{AddKeyToSAS})}}
             [] semanticStatement([bind ident(X) ident(Y)] E) then
 			    {Unify ident(X) ident(Y) E}
             [] semanticStatement(apply|ident(f)|xs E) then
