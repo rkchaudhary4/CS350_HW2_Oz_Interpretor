@@ -40,6 +40,12 @@ proc {Interpret SStack}
                         end
                     end
                 end
+            [] semanticStatement([nop] E) then 
+                skip
+            [] semanticStatement([var ident(X) s] E) then
+			    {Push SemanticStack s {Adjoin E environment(X:{AddKeyToSAS})}}
+            [] semanticStatement([bind ident(X) ident(Y)] E) then
+			    {Unify ident(X) ident(Y) E}
             [] semanticStatement(apply|ident(f)|xs E) then
             local ValOfX in
                 ValOfX = {RetrieveFromSAS E.f}
