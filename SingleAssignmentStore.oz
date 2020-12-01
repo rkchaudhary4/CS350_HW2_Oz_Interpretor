@@ -1,5 +1,4 @@
-declare SAS RetrieveFromSAS BindRefToKeyInSAS  BindValueToKeyInSAS
-
+declare SAS RetrieveFromSAS BindRefToKeyInSAS  BindValueToKeyInSAS AddKeyToSAS
 SAS ={Dictionary.new}
 count = {NewCell 0}
 fun {RetrieveFromSAS X}
@@ -14,7 +13,6 @@ fun {RetrieveFromSAS X}
     end
 end
 
-declare
 proc {BindValueToKeyInSAS X Val}
    case {Dictionary.condGet SAS X unbound} of
     unbound then {Dictionary.put SAS X Val}
@@ -24,7 +22,6 @@ proc {BindValueToKeyInSAS X Val}
    end
 end
 
-declare
 proc {BindRefToKeyInSAS X Ref}
    case {Dictionary.condGet SAS X unbound} of
       unbound then {Dictionary.put SAS X reference(Ref)}

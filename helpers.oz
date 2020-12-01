@@ -68,28 +68,28 @@ fun {NotUnique List}
     end
 end
 
-fun {ArgsInClosure ArgList xs closure E}
+fun {ArgsInClosure ArgList Xs Closure E}
     case ArgList
-    of nil then closure
+    of nil then Closure
     [] ident(H) | T then
-        case xs
+        case Xs
         of nil then raise 'wrong arguments to procedure' end
         [] ident(H1) | T1 then
-            {ArgsInClosure T T1 {Adjoin closure environment(H:E.H1)} E}
+            {ArgsInClosure T T1 {Adjoin Closure environment(H:E.H1)} E}
         [] H1 | T1 then
             local A in
                 A = {AddKeyToSAS}
                 {BindValueToKeyInSAS A H1}
-                {ArgsInClosure T T1 {Adjoin closure environment(H:A)} E}
+                {ArgsInClosure T T1 {Adjoin Closure environment(H:A)} E}
             end
         end 
     end
 end
 
 fun {MakeEnvironment Args E}
-	case Args of x|xs then
-		if x == nothing then {MakeEnvironment xs E}
-		else {Adjoin environment(x:E.x) {MakeEnvironment xs E}}
+	case Args of X|Xs then
+		if X == nothing then {MakeEnvironment Xs E}
+		else {Adjoin environment(X:E.X) {MakeEnvironment Xs E}}
 		end
 	else environment() end
 end
