@@ -10,7 +10,7 @@ fun {RetrieveFromSAS X}
 	                [] reference(Z) then {RetrieveFromSAS Z}
 	                else V end
             end
-    else raise keyMissing(X) end
+    else raise 'Key missing during assigning' end
     end
 end
 
@@ -19,7 +19,7 @@ proc {BindValueToKeyInSAS X Val}
    case {Dictionary.condGet SAS X unbound} of
     unbound then {Dictionary.put SAS X Val}
     [] reference(Z) then {BindValueToKeyInSAS Z Val}
-    [] Z then raise keyAlreadyAssigned(X) end
+    [] Z then raise 'keyAlreadyAssigned' end
    else skip
    end
 end
