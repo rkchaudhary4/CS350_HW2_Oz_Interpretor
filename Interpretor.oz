@@ -9,7 +9,7 @@ proc {Push SStack  S E}
     nil then 
         skip
     else 
-        SStack := sematicStatement(S E) | @SStack 
+        SStack := semanticStatement(S E) | @SStack 
     end
 end
 
@@ -27,7 +27,7 @@ proc {Interpret SStack}
     case @SStack of nil then {Browse 'Program finished'}
     else
         case {Pop SStack} of
-            sematicStatement([match ident(X) P S1 S2] E) then
+            semanticStatement([match ident(X) P S1 S2] E) then
                 local ValOfX Match Enew in
                     ValOfX = {RetrieveFromSAS E.X}
                     if ValOfX.1 \= record then raise 'Variable not a record' end
@@ -41,12 +41,15 @@ proc {Interpret SStack}
                         end
                     end
                 end
-            [] semanticStatement([nop] E) then 
+            [] semanticStatement([nop] E) then
                 skip
             [] semanticStatement([var ident(X) S] E) then
-			    {Push SStack S {Adjoin E environment(X:{AddKeyToSAS})}}
+                {Push SStack S {Adjoin E environment(X:{AddKeyToSAS})}}
             [] semanticStatement([bind ident(X) ident(Y)] E) then
-			    {Unify ident(X) ident(Y) E}
+                {Unify ident(X) ident(Y) E}
+            [] semanticStatement(S1|S2 E) then
+                {Push SStack S2 E}
+                {Push SStack S1 E}
             [] semanticStatement([bind X1 Y1] E) then
                 local X V in
                     case X1 of ident(X2) then
@@ -88,3 +91,20 @@ proc {Interpret SStack}
             {Interpret SStack}
     end
 end
+
+% Add a variable Program for the program you want to run, you may uncomment the given program for testing
+% Use [po [ident(X1) ....] s] for procedures
+%declare Program
+%Program = [var ident(foo)
+% 			 [var ident(bar)
+% 			  [var ident(quux)
+% 			   [[bind ident(bar) [po [ident(baz)]
+% 					      [bind [record literal(person)
+% 						     [literal(age) ident(foo)]] ident(baz)]]]
+% 			    [apply ident(bar) ident(quux)]
+% 			    [bind [record literal(person) [literal(age) literal(40)]] ident(quux)]
+%			    [bind literal(40) ident(foo)]]]]]
+
+{Push SStack Program environment()}
+{Interpret SStack}
+{Browse 'Thank you for using our interpreter' }

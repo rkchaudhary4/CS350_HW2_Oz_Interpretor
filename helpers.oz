@@ -95,7 +95,7 @@ fun {MakeEnvironment Args E}
 end
 
 fun {CalcClosure S E}
-    case S of [localvar ident(X) S1] then {Record.subtract {CalcClosure S1 {Adjoin environment(X:0) E}}X} 
+    case S of [var ident(X) S1] then {Record.subtract {CalcClosure S1 {Adjoin environment(X:0) E}}X} 
     [] [bind ident(X) ident(Y)] then environment(X:E.X Y:E.Y)
     [] [bind X1 Y1] then
         local X V in

@@ -1,6 +1,6 @@
-declare SAS RetrieveFromSAS BindRefToKeyInSAS  BindValueToKeyInSAS AddKeyToSAS
+declare SAS RetrieveFromSAS BindRefToKeyInSAS  BindValueToKeyInSAS AddKeyToSAS Count
 SAS ={Dictionary.new}
-count = {NewCell 0}
+Count = {NewCell 0}
 fun {RetrieveFromSAS X}
    if {Dictionary.member SAS X}
     then
@@ -32,9 +32,9 @@ proc {BindRefToKeyInSAS X Ref}
 end
 
 fun {AddKeyToSAS}
-   local key = @count in
-      {Dictionary.put SAS key unbound}
-      @count := @count + 1
-      key
+   local Key = @Count in
+      {Dictionary.put SAS Key unbound}
+      Count := @Count + 1
+      Key
    end
 end
