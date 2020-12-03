@@ -92,19 +92,9 @@ proc {Interpret SStack}
     end
 end
 
-% Add a variable Program for the program you want to run, you may uncomment the given program for testing
+% Add a variable Program for the program you want to run and then uncomment the 98th line, which Pushes the statements on stack
 % Use [po [ident(X1) ....] s] for procedures
-%declare Program
-%Program = [var ident(foo)
-% 			 [var ident(bar)
-% 			  [var ident(quux)
-% 			   [[bind ident(bar) [po [ident(baz)]
-% 					      [bind [record literal(person)
-% 						     [literal(age) ident(foo)]] ident(baz)]]]
-% 			    [apply ident(bar) ident(quux)]
-% 			    [bind [record literal(person) [literal(age) literal(40)]] ident(quux)]
-%			    [bind literal(40) ident(foo)]]]]]
 
-{Push SStack Program environment()}
+%{Push SStack Program environment()}
 {Interpret SStack}
 {Browse 'Thank you for using our interpreter' }
