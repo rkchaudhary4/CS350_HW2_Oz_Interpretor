@@ -1,7 +1,6 @@
-declare SAS RetrieveFromSAS BindRefToKeyInSAS  BindValueToKeyInSAS
-
+declare SAS RetrieveFromSAS BindRefToKeyInSAS  BindValueToKeyInSAS AddKeyToSAS Count
 SAS ={Dictionary.new}
-count = {NewCell 0}
+Count = {NewCell 0}
 fun {RetrieveFromSAS X}
    if {Dictionary.member SAS X}
     then
@@ -10,21 +9,19 @@ fun {RetrieveFromSAS X}
 	                [] reference(Z) then {RetrieveFromSAS Z}
 	                else V end
             end
-    else raise keyMissing(X) end
+    else raise 'Key missing during assigning' end
     end
 end
 
-declare
 proc {BindValueToKeyInSAS X Val}
    case {Dictionary.condGet SAS X unbound} of
     unbound then {Dictionary.put SAS X Val}
     [] reference(Z) then {BindValueToKeyInSAS Z Val}
-    [] Z then raise keyAlreadyAssigned(X) end
+    [] Z then raise 'keyAlreadyAssigned' end
    else skip
    end
 end
 
-declare
 proc {BindRefToKeyInSAS X Ref}
    case {Dictionary.condGet SAS X unbound} of
       unbound then {Dictionary.put SAS X reference(Ref)}
@@ -35,9 +32,9 @@ proc {BindRefToKeyInSAS X Ref}
 end
 
 fun {AddKeyToSAS}
-   local key = @count in
-      {Dictionary.put SAS key unbound}
-      @count := @count + 1
-      key
+   local Key = @Count in
+      {Dictionary.put SAS Key unbound}
+      Count := @Count + 1
+      Key
    end
 end
